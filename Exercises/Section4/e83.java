@@ -1,37 +1,53 @@
-import java.util.ArrayList;
-import java.util.Random;
+public class HangmanLogic {
 
-public class LotteryNumbers {
-  private ArrayList<Integer> numbers;
-  private Random random = new Random();
+  private String word;
+  private String guessedLetters;
+  private int numberOfFaults;
 
-  public LotteryNumbers() {
-    this.drawNumbers();
+  public HangmanLogic(String word) {
+    this.word = word.toUpperCase();
+    this.guessedLetters = "";
+    this.numberOfFaults = 0;
   }
 
-  public ArrayList<Integer> numbers() {
-    return this.numbers;
+  public int numberOfFaults() {
+    return this.numberOfFaults;
   }
 
-  public boolean containsNumber(int number) {
-    if (this.numbers.contains(number)) {
-      return true;
-    }
-    return false;
+  public String guessedLetters() {
+    return this.guessedLetters;
   }
 
-  public void drawNumbers() {
-    this.numbers = new ArrayList<Integer>();
-    int i = 0;
+  public int losingFaultAmount() {
+    return 12;
+  }
 
-    for (i = 0; i < 7; i++) {
-      int drawnNumber = random.nextInt(39) + 1;
-      while(containsNumber(drawnNumber)) {
-        drawnNumber = random.nextInt(39) + 1;
+  public void guessLetter(String letter) {
+    if (guessedLetters.contains(letter)) {
+      return;
+    } else {
+      guessedLetters += letter;
+      if (!word.contains(letter)) {
+        numberOfFaults++;
       }
-      this.numbers.add(drawnNumber);
     }
-
   }
 
+  public String hiddenWord() {
+    int i = 0;
+    String hiddenWord = "";
+
+    while (i < word.length()) {
+      char currentLetter = word.charAt(i);
+      String currentLetterString = "" + currentLetter;
+
+      if (guessedLetters.contains(currentLetterString)) {
+        hiddenWord += currentLetterString;
+      } else {
+        hiddenWord += "_";
+      }
+      i++;
+    }
+    return hiddenWord;
+  }
 }
